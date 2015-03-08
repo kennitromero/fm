@@ -4,10 +4,34 @@
     Author     : kennross
 --%>
 
+<%@page import="modelo.dtos.UsuarioDto"%>
+<%@page import="modelo.dtos.UsuarioDto"%>
 <%@page import="modelo.dtos.DepartamentoDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.daos.DepartamentoDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    HttpSession miSesion = request.getSession(false);
+    HttpSession miSesionRoles = request.getSession(false);
+
+    UsuarioDto actualUsuario;
+    ArrayList<Integer> rolesActuales;
+
+    actualUsuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
+    rolesActuales = (ArrayList<Integer>) miSesionRoles.getAttribute("roles");
+
+    if (actualUsuario != null) {
+        for (Integer i : rolesActuales) {
+            if (i.toString().equals("1")) {
+                response.sendRedirect("pages/plantilla.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ups!</strong> No cerró sesión adecuadamente.&tipoAlert=danger");
+            } else if (i.toString().equals("2")) {
+                response.sendRedirect("pages/indexc.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ups!</strong> No cerró sesión adecuadamente.&tipoAlert=danger");
+            } else if (i.toString().equals("3")) {
+                response.sendRedirect("pages/indexa.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ups!</strong> No cerró sesión adecuadamente.&tipoAlert=danger");                
+            }
+        }
+    } else {        
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,7 +51,7 @@
             <!-- Banner Farmer's Market -->
             <div class="row">
                 <div class="col-md-12">
-                    <img src="img/banner.jpg" alt="Banner de Farmer's Market">
+                    <a href="index.jsp"><img src="img/banner.jpg" alt="Banner de Farmer's Market"></a>
                 </div>
             </div>
             <!-- Fin del Banner  -->            
@@ -91,7 +115,7 @@
                         </a>
                         <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
                             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">S</span>
+                            <span class="sr-only">Siguiente</span>
                         </a>
                         <!-- Fin de controles -->
                     </div>
@@ -162,13 +186,13 @@
                                 <!-- Contenedor del formulario de registro -->
                                 <div class="container-fluid">
                                     <div class="col-md-12">
-                                        <form method="POST" action="GestionUsuarios">
+                                        <form method="POST" action="captchaEnviado.jsp">
                                             <div class="col-md-6">
                                                 <div class="form-group has-feedback" id="inpRol">
                                                     <label for="ruRol" class="control-label">Yo soy:</label>
                                                     <select name="ruRol" id="ruRol" class="form-control" tabindex="1" required autofocus onblur="validarSeleccionRol(this)">
                                                         <option value="0">Seleccione un rol</option>
-                                                        <option value="1">Cliente</option>
+                                                        <option value="1" selected>Cliente</option>
                                                         <option value="2">Productor</option>                                                        
                                                     </select>
                                                 </div>
@@ -206,7 +230,7 @@
                                                 <div class="form-group has-feedback" id="inpCorreoRepetido">
                                                     <label class="control-label" for="ruCorreo2">Repetir Correo:</label>
                                                     <input type="text" class="form-control" name="ruCorreo2" tabindex="6" onblur="validarRepetirCorreo(this)"
-                                                           id="ruCorreo2" required>
+                                                           id="ruCorreo2" value="alyssa-luna@hotmail.com" required>
                                                     <i id="iconFeedbackCorreo2"></i>
                                                 </div>
                                             </div>
@@ -229,7 +253,7 @@
                                                             listDepartamentos = (ArrayList<DepartamentoDto>) departDao.obtenerDepartamentos();
                                                             for (DepartamentoDto d : listDepartamentos) {
                                                         %>
-                                                        <option value="<%= d.getIdDepartamento()%>"><%= d.getNombre() %></option>
+                                                        <option value="<%= d.getIdDepartamento()%>"><%= d.getNombre()%></option>
                                                         <%
                                                             }
                                                         %>
@@ -249,8 +273,8 @@
                                                     <i id="iconFeedbackClave"></i>
                                                 </div>
 
-                                                <div class="form-group has-feedback" id="inpCaptcha">
-                                                    <label class="control-label" for="answer"><img src="ocaptcha"/></label>
+                                                <div class="form-group has-feedback" id="answer">
+                                                    <label class="control-label" for="answer"><img src="ocaptcha"></label>
                                                     <input type="text" name="answer" id="answer" class="form-control" 
                                                            placeholder="Ingrese los caracteres de la figura" tabindex="9" required onblur="validarCaptcha(this)">                                                    
                                                 </div>
@@ -294,12 +318,12 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="control-label" for="isDocumento">N° Documento</label>
-                                                <input type="text" class="form-control" id="isDocumento" 
+                                                <input type="text" class="form-control" id="isDocumento" value="64569185"
                                                        name="isDocumento" maxlength="10" placeholder="Ingrese su documento">
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label" for="isClave">Contraseña</label>
-                                                <input type="password" class="form-control" id="isClave" name="isClave" placeholder="Ingrese su contraseña">
+                                                <input type="password" class="form-control" id="isClave" value="mark42" name="isClave" placeholder="Ingrese su contraseña">
                                                 <br>
                                                 <em><a href="#" data-toggle="modal" data-target="#modalRecuperarClave">¿Olvido su contraseña?</a></em>
                                             </div>
@@ -415,3 +439,6 @@
         </div>
     </body>
 </html>
+<%
+    }
+%>

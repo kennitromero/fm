@@ -189,4 +189,53 @@ public class UsuarioDao {
         }
         return salidaValidar;
     }
+    
+    public UsuarioDto validarSesion(long documento) {
+        UsuarioDto usuario = null;
+        String sqlTemp = "SELECT `idUsuario`, `Clave` FROM `usuarios` WHERE `idUsuario` = ?";
+        try {
+            pstm = miCon.prepareStatement(sqlTemp);
+            pstm.setLong(1, documento);
+            rs = pstm.executeQuery();
+
+            usuario = new UsuarioDto();
+            while (rs.next()) {
+                usuario.setIdUsuario(rs.getLong("idUsuario"));
+                usuario.setClave(rs.getString("Clave"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error, detalle: " + ex.getMessage());
+        }
+        return usuario;
+    }
+    
+    public UsuarioDto obtenerUsuarioPorId(long idUsuario) {        
+        sqlTemp = "SELECT `idUsuario`, `Nombres`, `Apellidos`, `Clave`, `Correo`, "
+                + "`FechaNacimiento`, `Direccion`, `idCiudad`, `FechaSistema`, `Imagen`, "
+                + "`Estado` FROM `usuarios` WHERE `idUsuario` = ?";
+        UsuarioDto salidaUsuario = new UsuarioDto();
+        try {
+            pstm = miCon.prepareStatement(sqlTemp);
+            pstm.setLong(1, idUsuario);
+            rs = pstm.executeQuery();
+            
+            while (rs.next()) {
+                
+                salidaUsuario.setIdUsuario(rs.getLong("idUsuario"));
+                salidaUsuario.setNombres(rs.getString("Nombres"));
+                salidaUsuario.setApellidos(rs.getString("Apellidos"));
+                salidaUsuario.setClave(rs.getString("Clave"));
+                salidaUsuario.setCorreo(rs.getString("Correo"));
+                salidaUsuario.setFechaNacimiento(rs.getString("FechaNacimiento"));
+                salidaUsuario.setDireccion(rs.getString("Direccion"));
+                salidaUsuario.setIdCiudad(rs.getInt("idCiudad"));
+                salidaUsuario.setFechaSistema(rs.getString("FechaSistema"));
+                salidaUsuario.setImagen(rs.getString("Imagen"));
+                salidaUsuario.setEstado(rs.getInt("Estado"));                
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error, detalle: " + ex.getMessage());
+        }
+        return salidaUsuario;
+    }
 }

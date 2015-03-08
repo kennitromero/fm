@@ -4,7 +4,28 @@
     Author     : kennross
 --%>
 
+<%@page import="modelo.daos.CiudadDao"%>
+<%@page import="modelo.dtos.DepartamentoDto"%>
+<%@page import="modelo.daos.DepartamentoDao"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="modelo.dtos.UsuarioDto"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+    HttpSession miSesion = request.getSession(false);
+    HttpSession miSesionRoles = request.getSession(false);
+
+    UsuarioDto actualUsuario;
+    ArrayList<Integer> rolesActuales;
+
+    actualUsuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
+    rolesActuales = (ArrayList<Integer>) miSesionRoles.getAttribute("roles");
+
+    if (actualUsuario == null) {
+        response.sendRedirect("../index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ups!</strong> Inicie Sesión Primero.&tipoAlert=warning");
+    } else {
+        CiudadDao consultasCiudad = new CiudadDao();
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +35,18 @@
         <link rel="stylesheet" type="text/css" href="../css/font-awesome.css">
         <script type="text/javascript" src="../js/jquery-1.11.2.js"></script>
         <script type="text/javascript" src="../js/bootstrap.js"></script>
+        <script type="text/javascript" src="../js/validaciones.js"></script>
+        <script type="text/javascript" src="../js/validacionesAjax.js"></script>
+        <script type="text/javascript" src="../js/ajaxPages.js"></script>
         <title>Mi Perfil - Farmer's Market</title>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+        </script>
     </head>
     <body>
         <div class="container">
@@ -33,14 +65,23 @@
                     <!-- Información del Rol iniciado -->
                     <div class="media">
                         <div class="media-left">
-                            <a href="#">
-                                <img class="media-object img-circle" width="50" src="../img/avatars/avatar.png" alt="Mi foto de perfil">
+                            <a href="#" data-toggle="modal" data-target="#modalSubirFoto">
+                                <img class="media-object img-circle" width="50" 
+                                     <%
+                                         if (actualUsuario.getImagen() != null) {
+                                             out.print("src='../" + actualUsuario.getImagen() + "'");
+                                         } else {
+                                             out.print("src='../img/avatars/user.png'");
+                                             out.print("data-toggle='tooltip' data-original-title='Presion clic para subir una foto'");
+                                         }
+                                     %>
+                                     alt="Mi foto de perfil">
                             </a>
                         </div>
                         <div class="media-body">
                             <p></p>
                             <h4 class="media-heading">Productor</h4>
-                            Kennit Romero
+                            <%= actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%>
                         </div>
                     </div>
                     <!-- Fin del rol iniciado -->
@@ -79,13 +120,14 @@
                                     <li><a href="#"><img src="../img/flag/ing/flag-ingles-16.png" alt="Cambiar idioma a Inglés" title="Cambiar idioma a Inglés"></a></li>
                                     <li><a href="#"><img src="../img/flag/spa/flag-spanis16.png" alt="Cambiar idioma a Español" title="Cambiar idioma a Español"></a></li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Kennit Romero <span class="fa fa-chevron-down"></span></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <%= actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%> <span class="fa fa-chevron-down"></span></a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li class="text-center"><a href="#">Cerrar Sesión</a></li>
+                                            <li class="text-center"><a href="../GestionSesiones?op=salir">Cerrar Sesión</a></li>
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="perfil.jsp">Mi Perfil</a></li>
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="#" data-toggle="modal" data-target="#modalCambiarClave">Cambiar Contraseña</a></li>
+                                            <li class="text-center"><a href="#" data-toggle="modal" data-target="#modalCambiarCorreo">Cambiar Correo</a></li>
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="#">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
                                         </ul>
@@ -119,32 +161,20 @@
                     </ol>
                     <!-- Fin de miga de pan -->
 
-                    <!-- Mensajes de alertas
-                    <div class="alert alert-success" role="alert">
+                    <!-- Mensajes de alertas -->
+                    <%
+                        if (request.getParameter("msg") != null && request.getParameter("tipoAlert") != null) {
+                    %>
+                    <div class="alert alert-<%= request.getParameter("tipoAlert")%>" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
+                        <p class="text-center"><%= request.getParameter("msg")%></p>
                     </div>
-                    <div class="alert alert-info" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
-                    </div>
-                    <div class="alert alert-warning" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
-                    </div>
-                    <div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
-                    </div>
-                    Fin de mensajes de alertas -->
+                    <%
+                        }
+                    %>            
+                    <!-- Fin de mensajes de alertas -->
 
                     <!-- Contenedor de contenido especifico -->
                     <div class="container-fluid">
@@ -158,14 +188,17 @@
                                                 <label for="auDocumento" class="col-sm-4 control-label">Documento</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" name="auDocumento" class="form-control" 
-                                                           id="auDocumento" placeholder="Documento">
+                                                           id="auDocumento" placeholder="Documento" readonly
+                                                           value="<%= actualUsuario.getIdUsuario()%>" data-toggle="tooltip" 
+                                                           data-original-title="No puede cambiar su documento, contacte a un administrador">                                                           
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="auNombres" class="col-sm-4 control-label">Nombres</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" name="auNombres" class="form-control" 
-                                                           id="auNombres" placeholder="Sus nombres">
+                                                           id="auNombres" placeholder="Sus nombres"
+                                                           value="<%= actualUsuario.getNombres()%>">
                                                 </div>
                                             </div>
 
@@ -173,45 +206,55 @@
                                                 <label for="auApellidos" class="col-sm-4 control-label">Apellidos</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" name="auApellidos" class="form-control" 
-                                                           id="auApellidos" placeholder="Sus apellidos">
+                                                           id="auApellidos" placeholder="Sus apellidos"
+                                                           value="<%= actualUsuario.getApellidos()%>">
                                                 </div>
                                             </div>
 
-                                            <div class="form-group has-feedback has-error">
-                                                <label for="auCorreo" class="col-sm-4 control-label">Correo</label>
+                                            <div class="form-group">
+                                                <label for="auCorreo" class="col-sm-4 control-label">Fecha de Nacimiento</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" name="auCorreo" class="form-control" 
-                                                           id="auCorreo" placeholder="Correo electrónico">
-                                                    <i class="glyphicon glyphicon-remove form-control-feedback"></i>
+                                                    <input type="date" name="auCorreo" class="form-control" 
+                                                           id="auCorreo" placeholder="Correo electrónico"
+                                                           value="<%= actualUsuario.getCorreo()%>">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group has-feedback has-warning">
-                                                <label for="auCiudad" class="col-sm-4 control-label">Ciudad</label>
+                                                <label for="auCiudad" class="col-sm-4 control-label">Depart...</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" name="auCiudad" class="form-control" 
-                                                           id="auCiudad" placeholder="Ciudad">
-                                                    <!-- Al momento de validar, se le manda la class a la i para agregar icon-->
-                                                    <i class="glyphicon glyphicon-exclamation-sign form-control-feedback"></i>
+                                                    <select name="ruDepartamento" id="ruDepartamento" class="form-control" tabindex="7" onblur="validarDepartamento(this);" onchange="getSubcategorias(this.value);" required>
+                                                        <option value="">Seleccione un departamento</option>
+                                                        <%
+                                                            DepartamentoDao departDao = new DepartamentoDao();
+                                                            ArrayList<DepartamentoDto> listDepartamentos;
+                                                            listDepartamentos = (ArrayList<DepartamentoDto>) departDao.obtenerDepartamentos();
+                                                            for (DepartamentoDto d : listDepartamentos) {
+                                                        %>
+                                                        <option value="<%= d.getIdDepartamento()%>"><%= d.getNombre()%></option>
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </select>                                                    
                                                 </div>
                                             </div>
 
                                             <div class="form-group has-feedback has-warning">
-                                                <label for="auCiudad" class="col-sm-4 control-label">Depart...</label>
+                                                <label for="auCiudad" class="col-sm-4 control-label">Ciudad</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" name="auCiudad" class="form-control" 
-                                                           id="auCiudad" placeholder="Departamento">
-                                                    <!-- Al momento de validar, se le manda la class a la i para agregar icon-->
-                                                    <i class="glyphicon glyphicon-exclamation-sign form-control-feedback"></i>
+                                                    <select name="ruCiudad" id="ruCiudad" class="form-control" tabindex="7" onblur="validarCiudad(this)" required>
+                                                        <option value="<%= actualUsuario.getIdCiudad()%>"><%= consultasCiudad.obtenerNombrePorId(actualUsuario.getIdCiudad())%></option>                                                        
+                                                    </select>
                                                 </div>
-                                            </div>
+                                            </div>                                            
 
                                             <div class="form-group has-feedback has-success">
                                                 <label for="auDireccion" class="col-sm-4 control-label">Dirección</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" name="auDireccion" class="form-control" 
-                                                           id="auDireccion" placeholder="Dirección">
+                                                           id="auDireccion" placeholder="Dirección"
+                                                           value="<%= actualUsuario.getDireccion()%>">
                                                     <!-- Al momento de validar, se le manda la class a la i para agregar icon-->
                                                     <i class="glyphicon glyphicon-ok form-control-feedback"></i>
                                                 </div>
@@ -235,10 +278,21 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <h4 class="text-center">Kennit Romero</h4>
+                                <h4 class="text-center"><%= actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%></h4>
                                 <div class="container-fluid">
-                                    <img src="../img/avatars/avatar.png" alt="..." class="img-thumbnail">
-                                </div>                                
+                                    <a href="#" data-toggle="modal" data-target="#modalSubirFoto">
+                                        <img 
+                                            <%
+                                                if (actualUsuario.getImagen() != null) {
+                                                    out.print("src='../" + actualUsuario.getImagen() + "'");
+                                                } else {
+                                                    out.print("src='../img/avatars/user.png' ");
+                                                    out.print("data-toggle='tooltip' data-original-title='Presion clic para subir una foto'");
+                                                }
+                                            %>                                             
+                                            alt="Imagen de perfil de usuario" class="img-thumbnail">
+                                    </a>                                                                        
+                                </div>
                             </div>
                         </div>                              
                     </div>
@@ -300,7 +354,71 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
+
+                        <!-- Fin de Cambiar Contraseña -->
+
+                        <!-- Cambiar Correo electrónico -->
+                        <div>
+                            <div class="modal fade" id="modalCambiarCorreo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title text-center" id="myModalLabel">Cambiar Corre Electrónico</h4>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form class="form-horizontal">
+                                                <div class="form-group has-error has-feedback">
+                                                    <label for="ccCorreo" class="col-sm-4 control-label">Correo Electrónico</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" 
+                                                               id="ccCorreo" placeholder="Correo electrónico la contraseña antigua"
+                                                               name="ccCorreo">
+                                                        <!-- Al momento de validar, se le manda la class a la i para agregar icon-->
+                                                        <i class="glyphicon glyphicon-remove form-control-feedback"></i>
+                                                    </div>
+                                                </div>                                               
+                                            </form>                                                                                        
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-success">Cambiar Correo</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin de Cambiar Correo electrónico -->
+
+                        <!-- Subir foto de perfil -->
+                        <div>
+                            <div class="modal fade" id="modalSubirFoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title text-center" id="myModalLabel">Subir una foto de perfil</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">Imagen de Perfil</label>
+                                                    <input type="file" id="exampleInputFile">
+                                                    <p class="help-block">Sólo se permite subir imágenes tipo JPG y PNG.</p>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-default">Colocar Foto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin para Subir foto de perfil -->
 
                         <!-- Formulario de Contáctenos -->
                         <div>
@@ -452,3 +570,6 @@
         </div>
     </body>
 </html>
+<%
+    }
+%>

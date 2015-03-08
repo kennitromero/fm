@@ -48,7 +48,7 @@ public class GestionUsuarios extends HttpServlet {
             nuevoUsuario.setFechaNacimiento(null);
             nuevoUsuario.setDireccion(request.getParameter("ruDireccion"));
             nuevoUsuario.setIdCiudad(Integer.parseInt(request.getParameter("ruCiudad")));
-            nuevoUsuario.setImagen(null);
+            nuevoUsuario.setImagen("img/avatars/avatar-productor.png");
             nuevoUsuario.setEstado(1);
             
             UsuarioDao realizarRegistro = new UsuarioDao();
@@ -57,11 +57,10 @@ public class GestionUsuarios extends HttpServlet {
             if (salida.equals("ok")) {
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Registro Éxitoso!</strong> Revise su correo para activar cuenta, puede iniciar sesión.&tipoAlert=success");
             } else if (salida.equals("okno")) {
-                response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Algo salió mal!</strong> Por favor intentelo de nuevo.&tipoAlert=warning");
+                response.sendRedirect("../index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Algo salió mal!</strong> Por favor intentelo de nuevo.&tipoAlert=warning");
             } else {
-                response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ocurrió un error!</strong> Detalle: " + salida + "&tipoAlert=danger");
+                response.sendRedirect("../index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ocurrió un error!</strong> Detalle: " + salida + "&tipoAlert=danger");
             }
-            
         }
         PrintWriter out = response.getWriter();
         try {

@@ -4,7 +4,24 @@
     Author     : kennross
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="modelo.dtos.UsuarioDto"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+    HttpSession miSesion = request.getSession(false);
+    HttpSession miSesionRoles = request.getSession(false);
+
+    UsuarioDto actualUsuario;
+    ArrayList<Integer> rolesActuales;
+
+    actualUsuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
+    rolesActuales = (ArrayList<Integer>) miSesionRoles.getAttribute("roles");
+
+    if (actualUsuario == null) {
+        response.sendRedirect("../index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ups!</strong> Inicie Sesión Primero.&tipoAlert=warning");
+    } else {
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -79,7 +96,7 @@
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Kennit Romero <span class="fa fa-chevron-down"></span></a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li class="text-center"><a href="#">Cerrar Sesión</a></li>
+                                            <li class="text-center"><a href="../GestionSesiones?op=salir">Cerrar Sesión</a></li>
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="perfil.jsp">Mi Perfil</a></li>
                                             <li class="divider"></li>
@@ -118,32 +135,20 @@
                     </ol>
                     <!-- Fin de miga de pan -->
 
-                    <!-- Mensajes de alertas
-                    <div class="alert alert-success" role="alert">
+                    <!-- Mensajes de alertas -->
+                    <%
+                        if (request.getParameter("msg") != null && request.getParameter("tipoAlert") != null) {
+                    %>
+                    <div class="alert alert-<%= request.getParameter("tipoAlert")%>" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
+                        <p class="text-center"><%= request.getParameter("msg")%></p>
                     </div>
-                    <div class="alert alert-info" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
-                    </div>
-                    <div class="alert alert-warning" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
-                    </div>
-                    <div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <p class="text-center"><strong><i class="glyphicon glyphicon-exclamation-sign"></i> Esto Ocurrió!</strong> Mensaje de prueba para las alertas</p>
-                    </div>
-                    Fin mensajes de alertas -->
+                    <%
+                        }
+                    %>            
+                    <!-- Fin de mensajes de alertas -->
 
                     <!-- Contenedor de contenido especifico -->
 
@@ -499,3 +504,6 @@
         </div>
     </body>
 </html>
+<%
+    }
+%>

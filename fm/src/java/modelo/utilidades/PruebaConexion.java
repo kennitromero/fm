@@ -81,6 +81,12 @@ public class PruebaConexion {
             System.out.println("----------------------------------");
             
             System.out.println(realizarRegistro.validarExistenciaDocumento(64569185));
+            
+            System.out.println("----------------------------------");                       
+            
+            UsuarioDto p = realizarRegistro.obtenerUsuarioPorId(1102867002);
+            System.out.println(p.getImagen());
+            
     }
     
 }

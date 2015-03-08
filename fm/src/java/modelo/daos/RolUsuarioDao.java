@@ -90,5 +90,21 @@ public class RolUsuarioDao {
             mensaje = "Error, detalle " + sqle.getMessage();
         }
         return mensaje;
-    }    
+    }
+    
+    public ArrayList<Integer> obtenerRolesParaUsuario(long documento) {
+        String sqlLeerRoles = "SELECT `idRol`, `idUsuario` FROM `rolusuario` WHERE `idUsuario` = ?";
+        ArrayList<Integer> misRoles = new ArrayList();
+        try {
+            pstm = miCon.prepareStatement(sqlLeerRoles);
+            pstm.setLong(1, documento);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                misRoles.add(rs.getInt("idRol"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error, detalle: " + ex.getMessage());
+        }
+        return misRoles;
+    }
 }

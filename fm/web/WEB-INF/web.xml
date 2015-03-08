@@ -8,6 +8,14 @@
         <servlet-name>PeticionesAjax</servlet-name>
         <servlet-class>controladores.validaciones.PeticionesAjax</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyCaptcha</servlet-name>
+        <servlet-class>controlador.utilidades.MyCaptcha</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GestionSesiones</servlet-name>
+        <servlet-class>controladores.gestiones.GestionSesiones</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GestionUsuarios</servlet-name>
         <url-pattern>/GestionUsuarios</url-pattern>
@@ -16,9 +24,59 @@
         <servlet-name>PeticionesAjax</servlet-name>
         <url-pattern>/PeticionesAjax</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyCaptcha</servlet-name>
+        <url-pattern>/MyCaptcha</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionSesiones</servlet-name>
+        <url-pattern>/GestionSesiones</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <servlet>
+        <servlet-name>StickyCaptcha</servlet-name>
+        <servlet-class>nl.captcha.servlet.StickyCaptchaServlet</servlet-class>
+        <!-- The width and height params are optional;
+        if unspecified they default to 200 and 50 respectively. -->
+        <init-param>
+            <param-name>width</param-name>
+            <param-value>150</param-value>
+        </init-param>
+        <init-param>
+            <param-name>height</param-name>
+            <param-value>50</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>OtraCaptcha</servlet-name>
+        <servlet-class>controlador.utilidades.MyCaptcha</servlet-class>
+        <init-param>
+            <param-name>width</param-name>
+            <param-value>140</param-value>
+        </init-param>
+        <init-param>
+            <param-name>height</param-name>
+            <param-value>40</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StickyCaptcha</servlet-name>
+        <url-pattern>/stickyImg</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AudioCaptcha</servlet-name>
+        <servlet-class>nl.captcha.servlet.AudioCaptchaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AudioCaptcha</servlet-name>
+        <url-pattern>/audio.wav</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OtraCaptcha</servlet-name>
+        <url-pattern>/ocaptcha</url-pattern>
+    </servlet-mapping>
 </web-app>
