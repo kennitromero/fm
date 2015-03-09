@@ -16,6 +16,10 @@
         <servlet-name>GestionSesiones</servlet-name>
         <servlet-class>controladores.gestiones.GestionSesiones</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Reportes</servlet-name>
+        <servlet-class>controladores.reportes.Reportes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GestionUsuarios</servlet-name>
         <url-pattern>/GestionUsuarios</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>GestionSesiones</servlet-name>
         <url-pattern>/GestionSesiones</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Reportes</servlet-name>
+        <url-pattern>/Reportes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
