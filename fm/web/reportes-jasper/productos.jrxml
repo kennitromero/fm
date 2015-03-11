@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4c3515a1-05c3-4c0c-afa9-3aa2e64964be">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="precio" class="java.lang.Long"/>
+	<field name="categoria" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="59" splitType="Stretch">
+			<staticText>
+				<reportElement x="150" y="0" width="261" height="59" uuid="287c7f1e-dd31-4918-aa92-f406b369d398"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Shruti" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Productos del sistema]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="104" y="7" width="346" height="20" uuid="462bc9e1-8abb-47bb-81ba-3384f4dc7299"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Productos disponibles para su debida comercialización]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="29" width="555" height="1" uuid="76d9c32d-f179-4e5b-8357-77a1bf83f0ce"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineColor="#00CC00"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="50" y="5" width="100" height="20" uuid="dc3a337a-bbff-4b64-8847-61055c84dfe1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SimSun" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="5" width="137" height="20" uuid="09229da3-e3a7-46a4-9237-609ab0d89558"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SimSun" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="5" width="100" height="20" uuid="12c8fc3b-3acc-44be-a54d-80577bf0c38a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SimSun" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="f1c01783-6841-48a9-9eb1-05c3febbe172"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineColor="#00CC00"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="247" y="6" width="100" height="20" uuid="aa67dc7e-591a-48a2-8328-a74dc91a7f27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SimSun" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="6" width="100" height="20" uuid="d6c9c3da-2d15-4224-afb1-ffbdc3258aff"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SimSun" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="6" width="100" height="20" uuid="f3c66d82-f50e-47ea-a266-768c04794888"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SimSun" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="18" width="555" height="1" uuid="6a233e95-83df-4b6d-bca3-8be61b5a6877"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineColor="#00CC00"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="6" width="100" height="20" uuid="31a2e1a3-1f1a-414f-85bb-6281e3eeb2d4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Pagina: " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="23" y="6" width="168" height="20" uuid="c28d867d-277a-4c08-9d3c-d0497776a5a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Farmer´s Market: Tienda online]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch"/>
+	</summary>
+</jasperReport>

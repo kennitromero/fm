@@ -24,6 +24,10 @@
         <servlet-name>GestionOfertas</servlet-name>
         <servlet-class>controladores.gestiones.GestionOfertas</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Generador</servlet-name>
+        <servlet-class>controladores.reportes.Generador</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GestionUsuarios</servlet-name>
         <url-pattern>/GestionUsuarios</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>GestionOfertas</servlet-name>
         <url-pattern>/GestionOfertas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Generador</servlet-name>
+        <url-pattern>/Generador</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -185,7 +185,7 @@
                         <div class="row ">
                             <div class="col-md-12 alert-link text-center">
                                 <h3>Resultados encontrados</h3>
-                                <a href="" class="">Generar Reporte</a>
+                                <a href="reporteproductos.jsp" class="">Generar Reporte</a>
                             
                         </div>
                         <div class="row col-md-12">                            
