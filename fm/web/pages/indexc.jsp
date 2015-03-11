@@ -65,9 +65,11 @@
 
                     <!-- Menú de navegación -->
                     <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation" class="active text-left"><a href="#">Inicio <i class="fa fa-shopping-cart "></i></a></li>
-                        <li role="presentation" class="text-left"><a href="#">Mis pedidos <i class="fa fa-shopping-cart "></i></a></li>
+                        <li role="presentation" class="active text-left"><a href="indexc.jsp">Inicio <i class="fa fa-shopping-cart "></i></a></li>
+                        <li role="presentation" class="text-left"><a href="mis-pedidosc.jsp">Mis pedidos <i class="fa fa-shopping-cart "></i></a></li>
                         <li role="presentation" class="text-left"><a href="#">Catalogo <i class="fa fa-list-alt "></i></a></li>
+                        <li role="presentation" class="text-left"><a href="ofertas.jsp">Ofertas <i class="fa fa-list-alt "></i></a></li>
+                        
                     </ul>
                     <!-- Fin del menú de navegación -->
 
