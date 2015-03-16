@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controladores.reportes;
 
 import java.io.IOException;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.daos.ReportesDao;
 import modelo.dtos.ReporteProductoDto;
+import modelo.dtos.ReporteProductosVendidos;
 
 /**
  *
@@ -35,13 +35,13 @@ public class Reportes extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         ReportesDao rDao = null;
         if (request.getParameter("buscar") != null) {
-            
+
             ArrayList<ReporteProductoDto> productos = new ArrayList();
             rDao = new ReportesDao();
-           ReporteProductoDto rDto = new ReporteProductoDto();
+            ReporteProductoDto rDto = new ReporteProductoDto();
             rDto.setNombre(request.getParameter("producto"));
             rDto.setCategoria(request.getParameter("categoria"));
 
@@ -51,18 +51,27 @@ public class Reportes extends HttpServlet {
             sesion.setAttribute("producto", productos);
             response.sendRedirect("reportes/productos-sistema.jsp");
 
+        } else if (request.getParameter("buscarvendidos") != null) {
+
+            ArrayList<ReporteProductosVendidos> productos = new ArrayList();
+            rDao = new ReportesDao();
+
+            String producto = request.getParameter("producto");
+            String novedad = request.getParameter("novedad");
+            productos = (ArrayList<ReporteProductosVendidos>) rDao.productosMasVendidos(producto, novedad);
+
+            HttpSession sesion = request.getSession(true);
+            sesion.setAttribute("vendidos", productos);
+            response.sendRedirect("reportes/productosmasvendidos.jsp");
         }
-        
-        
-        
-        
+
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Reportes</title>");            
+            out.println("<title>Servlet Reportes</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Reportes at " + request.getContextPath() + "</h1>");

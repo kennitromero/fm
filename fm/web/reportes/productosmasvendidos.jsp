@@ -4,6 +4,7 @@
     Author     : kennross
 --%>
 
+<%@page import="modelo.dtos.ReporteProductosVendidos"%>
 <%@page import="modelo.dtos.ReporteProductoDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.dtos.UsuarioDto"%>
@@ -162,18 +163,18 @@
                                     <input type="text" class="form-control" name="producto">
                                 </div>
                                 <div class="form-group">
-                                    <label>Buscar Categoria</label>
-                                    <input type="text" class="form-control" name="categoria">
+                                    <label>Buscar Novedad</label>
+                                    <input type="text" class="form-control" name="novedad">
                                 </div>
-                                <input type="submit" class="btn btn-success" name="buscar" value="Buscar">
+                                <input type="submit" class="btn btn-success" name="buscarvendidos" value="Buscar">
 
                             </form>
                             <br>
                         </div>
                         <%
                             HttpSession sesion = request.getSession(false);
-                            if (sesion.getAttribute("producto") != null) {
-                                ArrayList<ReporteProductoDto> productos = (ArrayList<ReporteProductoDto>) sesion.getAttribute("producto");
+                            if (sesion.getAttribute("vendidos") != null) {
+                                ArrayList<ReporteProductosVendidos> productos = (ArrayList<ReporteProductosVendidos>) sesion.getAttribute("vendidos");
                                 if (productos.size() == 0) {
                         %>
                         <div class="alert-info col-md-12 text-center">                        
@@ -185,7 +186,7 @@
                         <div class="row ">
                             <div class="col-md-12 alert-link text-center">
                                 <h3>Resultados encontrados</h3>
-                                <a href="reporteproductos.jsp" class="">Producto del sistema <p class="fa fa-file-pdf-o"></p></a>
+                                <a href="reporteproductos.jsp" class="">Producto mas vendidos <p class="fa fa-file-pdf-o"></p></a>
 
                             </div>
                             <div class="row col-md-12">                            
@@ -193,18 +194,24 @@
                                     <thead >
                                         <tr>
                                             <th>Producto</th>
-                                            <th>Precio</th>
-                                            <th>Categoria</th>
+                                            <th>Presentacion</th>
+                                            <th>Novedad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Precio de venta</th>
+                                            <th>Cantidad vendido</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <%
-                                            for (ReporteProductoDto producto : productos) {
+                                            for (ReporteProductosVendidos producto : productos) {
                                         %>
                                         <tr class="active">
-                                            <td><%=producto.getNombre()%></td>
-                                            <td><%=producto.getPrecio()%></td>
-                                            <td><%=producto.getCategoria()%></td>
+                                            <td><%=producto.getProducto()%></td>
+                                            <td><%=producto.getPresentacion()%></td>
+                                            <td><%=producto.getNovedad()%></td>
+                                            <td><%=producto.getPrecioUnitario()%></td>
+                                            <td><%=producto.getPrecioVenta()%></td>
+                                            <td><%=producto.getPedidos()%></td>
                                         </tr>
                                         <%
                                                 }
